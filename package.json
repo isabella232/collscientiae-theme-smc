@@ -23,6 +23,8 @@
     "coffee-script": "^1.10.0",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "html-loader": "^0.4.3",
+    "html-webpack-plugin": "^2.10.0",
     "node-sass": "^3.4.2",
     "sass-loader": "^3.1.2",
     "style-loader": "^0.13.0",

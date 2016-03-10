@@ -7,7 +7,7 @@ _ = require "lodash"
 
 
 main = ->
-    $("#test").html("abc")
+    $("#test123").html("abc")
 
     $ul = $("#test").append("ul")
     for x in [0...10]

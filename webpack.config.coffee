@@ -8,6 +8,7 @@ fs      = require('fs')
 
 VERSION = '1.0.0'
 OUTPUT = 'build' # target dir (will get wiped before each build!)
+RES = 'res'
 
 # assets.json file
 AssetsPlugin = require('assets-webpack-plugin')
@@ -26,13 +27,23 @@ cleanWebpackPlugin = new CleanWebpackPlugin [OUTPUT],
 # https://webpack.github.io/docs/stylesheets.html
 ExtractTextPlugin = require("extract-text-webpack-plugin")
 
-plugins = [assetsPlugin, cleanWebpackPlugin, new ExtractTextPlugin("styles-[hash].css")]
+# https://www.npmjs.com/package/html-webpack-plugin
+HtmlWebpackPlugin = require('html-webpack-plugin')
+htmlWebpackPlugin = new HtmlWebpackPlugin
+                              filename: 'index.html',
+                              template: 'client/index.html'
+
+extractCSS = new ExtractTextPlugin(path.join(RES, "styles-[hash].css"))
+
+plugins = [assetsPlugin, cleanWebpackPlugin, extractCSS, htmlWebpackPlugin]
+
 if process.argv.indexOf('--minimize') != -1
     plugins.push new webpack.optimize.UglifyJsPlugin
                             minimize:true
                             comments:false
                             mangle:
                                 except: ['$super', '$', 'exports', 'require']
+
 
 module.exports =
     cache: true
@@ -43,11 +54,11 @@ module.exports =
         "main" : "./client/app"
 
     output:
-        path                : path.join(__dirname, OUTPUT, "res")
-        publicPath          : "/res/"
-        filename            : '[name]-[hash].js'
-        sourceMapFilename   : '[file].map'
-        chunkFilename       : '[id].[hash].js'
+        path                : path.join(__dirname, OUTPUT)
+        publicPath          : "/"
+        filename            : path.join(RES, '[name]-[hash].js')
+        sourceMapFilename   : path.join(RES, '[file].map')
+        chunkFilename       : path.join(RES, '[id].[hash].js')
 
     devtool: "source-map"
 
