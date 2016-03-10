@@ -1,0 +1,31 @@
+{
+  "name": "collscientiae-theme-smc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "make": "webpack --progress --debug --devtool sourcemap --output-pathinfo",
+    "prod": "webpack --progress --minimize --optimize-max-chunks --optimize-min-chunk-size --optimize-minimize --optimize-occurence-order --optimize-dedupe",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Harald Schilly",
+  "license": "CC-BY-SA-4.0",
+  "dependencies": {
+    "bootstrap": "^4.0.0-alpha.2",
+    "jquery": "^2.2.1",
+    "lodash": "^4.6.1",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "assets-webpack-plugin": "^3.4.0",
+    "clean-webpack-plugin": "^0.1.8",
+    "coffee-loader": "^0.7.2",
+    "coffee-script": "^1.10.0",
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "node-sass": "^3.4.2",
+    "sass-loader": "^3.1.2",
+    "style-loader": "^0.13.0",
+    "webpack": "^1.12.14"
+  }
+}
