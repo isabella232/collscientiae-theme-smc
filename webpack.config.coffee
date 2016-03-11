@@ -57,8 +57,8 @@ module.exports =
         path                : path.join(__dirname, OUTPUT)
         publicPath          : "/"
         filename            : path.join(RES, '[name]-[hash].js')
-        sourceMapFilename   : path.join(RES, '[file].map')
-        chunkFilename       : path.join(RES, '[id].[hash].js')
+        sourceMapFilename   : path.join('[file].map')
+        chunkFilename       : path.join('[name]-[id]-[hash].js')
 
     devtool: "source-map"
 
