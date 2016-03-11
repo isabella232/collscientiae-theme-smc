@@ -1,4 +1,5 @@
-require "bootstrap/dist/css/bootstrap.css"
+# require "bootstrap/dist/css/bootstrap.css"
+require "bootstrap/scss/bootstrap.scss"
 
 require './style.sass'
 

@@ -35,7 +35,20 @@ htmlWebpackPlugin = new HtmlWebpackPlugin
 
 extractCSS = new ExtractTextPlugin(path.join(RES, "styles-[hash].css"))
 
-plugins = [assetsPlugin, cleanWebpackPlugin, extractCSS, htmlWebpackPlugin]
+# https://github.com/webpack/docs/wiki/optimization#multi-page-app
+CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin")
+commonsChunkPlugin = new CommonsChunkPlugin(path.join(RES, "common-[hash].js"))
+
+cssConfig = JSON.stringify({discardComments: {removeAll: true}, mergeLonghand: true})
+
+extractTextCss  = ExtractTextPlugin.extract("style", "css?sourceMap&#{cssConfig}")
+extractTextSass = ExtractTextPlugin.extract("style", "css?#{cssConfig}!sass?sourceMap&indentedSyntax")
+extractTextScss = ExtractTextPlugin.extract("style", "css?#{cssConfig}!sass?sourceMap")
+extractTextLess = ExtractTextPlugin.extract("style", "css?#{cssConfig}!less?sourceMap")
+
+dedupePlugin = new webpack.optimize.DedupePlugin()
+
+plugins = [assetsPlugin, dedupePlugin, cleanWebpackPlugin, extractCSS, htmlWebpackPlugin, commonsChunkPlugin]
 
 if process.argv.indexOf('--minimize') != -1
     plugins.push new webpack.optimize.UglifyJsPlugin
@@ -69,16 +82,17 @@ module.exports =
     module:
         loaders: [
             { test: /\.cjsx$/,   loaders: ['coffee', 'cjsx'] },
-            { test: /\.coffee$/, loader: 'coffee?sourceMap' },
-            { test: /\.less$/,   loaders: ["style", "css", "less?sourceMap"]},
-            { test: /\.sass$/,   loaders: ["style", "css", "sass?sourceMap&indentedSyntax"]},
+            { test: /\.coffee$/, loader : 'coffee?sourceMap' },
+            { test: /\.less$/,   loader : extractTextLess },
+            { test: /\.scss$/,   loader : extractTextScss },
+            { test: /\.sass$/,   loader : extractTextSass }, # loaders: ["style", "css", "sass?sourceMap&indentedSyntax"]},
             { test: /\.json$/,   loaders: ['json'] },
             { test: /\.png$/,    loader: "url-loader?limit=100000" },
             { test: /\.(jpg|jpeg|gif)$/,    loader: "file-loader"},
             { test: /\.html$/,   loader: "html-loader"},
             { test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, loader: "url-loader?mimetype=application/font-woff" },
             { test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/, loader: "file-loader?name=[name].[ext]" },
-            { test: /\.css$/, loader: ExtractTextPlugin.extract("style", "css?sourceMap") }
+            { test: /\.css$/, loader: extractTextCss }
         ]
 
     resolve:
