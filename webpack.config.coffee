@@ -55,7 +55,7 @@ module.exports =
 
     output:
         path                : path.join(__dirname, OUTPUT)
-        publicPath          : "/"
+        publicPath          : ""
         filename            : path.join(RES, '[name]-[hash].js')
         sourceMapFilename   : path.join('[file].map')
         chunkFilename       : path.join('[name]-[id]-[hash].js')
